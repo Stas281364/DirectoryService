@@ -1,0 +1,3 @@
+﻿namespace DirectoryService.Domain.Location;
+
+public record LocationId(Guid value);

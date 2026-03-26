@@ -6,13 +6,14 @@ namespace DirectoryService.Domain.Department;
 public class Department
 {
     ////////////////////Private
-    private List<Department> _childDepartments = [];
-    
+    private readonly List<Department> _childDepartments = [];
+    private readonly List<DepartmentLocation.DepartmentLocation> _departmentLocations = [];
+    private readonly List<DepartmentPosition.DepartmentPosition> _departmentPositions = [];
     ////////////////////Public
-    public Guid Id { get; private set; }
+    public DepartmentId Id { get; private set; }
     public Name DepartmentName { get; private set; } //ValueObject
     public Identifier Identifier { get; private set; } //ValueObject
-    public Department? ParentDepartment { get; private set; } //ParentId/Foreing key/ null = корень
+    public DepartmentId? ParentDepartmentId { get; private set; } //ParentId/Foreing key/ null = корень
     public Path Path { get; private set; } //ValueObject
     public short Depth { get; private set; } // Глубина подразделения
     public bool IsActive { get; private set; } // для soft delete
@@ -20,6 +21,8 @@ public class Department
     public DateTime CreatedAt { get; private set; }
     public DateTime UpdatedAt { get; private set; }
     
+    public IReadOnlyList<DepartmentLocation.DepartmentLocation> DepartmentLocations => _departmentLocations;
+    public IReadOnlyList<DepartmentPosition.DepartmentPosition> DepartmentPositions => _departmentPositions;
 
 
     //public List<Guid> IdBotDepartments { get; set; } = [];
@@ -29,12 +32,12 @@ public class Department
     {
     }
 
-    private Department(Name name, Identifier identifier, Department parentDepartment, Path path, short depth)
+    private Department(Name name, Identifier identifier, DepartmentId parentDepartment, Path path, short depth)
     {
-        Id = Guid.NewGuid();
+        Id = new DepartmentId(Guid.NewGuid());
         DepartmentName = name;
         Identifier = identifier;
-        ParentDepartment = parentDepartment;
+        ParentDepartmentId = parentDepartment;
         Path = path;
         Depth = depth;
         IsActive = true;
@@ -43,14 +46,14 @@ public class Department
     }
         
     //Создане модели
-    public static Result<Department> Create(Name name, Identifier identifier, Department parentDepart, Path path, short depth)
+    public static Result<Department> Create(Name name, Identifier identifier, DepartmentId parentDepartmentId, Path path, short depth)
     {
         //return new Result<Department>(); /// МОЖНО ТАК!!! 
         //Result.Success<Department>(new Department(...))  ///ИЛИ МОЖНО ТАК!!! 
         //return new Department(,,,); /// ИЛИ ТАК!!! 
         
         //Валидация уже имеется в Name Identifier Path
-        return new Department(name, identifier, parentDepart, path, depth);
+        return new Department(name, identifier, parentDepartmentId, path, depth);
     }
 
     //Изменение модели
@@ -85,16 +88,16 @@ public class Department
     }
 
     //Изменение Parent
-    public Result ChangeParentDepartment(Department parentDepartment)
+    public Result ChangeParentDepartment(DepartmentId parentDepartmentId)
     {
-        if (ParentDepartment == null ||  //Если корень
-            ParentDepartment.Id == parentDepartment.Id || //Если тот же parent
+        if (parentDepartmentId == null ||  //Если корень
+            parentDepartmentId == ParentDepartmentId || //Если тот же parent
             ChildDepartments.Count != 0)   // Если есть дети
         {
             return Result.Failure<Department>($"The parent department can`t be changed");
         }
 
-        ParentDepartment = parentDepartment;
+        ParentDepartmentId = parentDepartmentId;
         UpdatedAt = DateTime.UtcNow;
         return Result.Success();
     }
@@ -138,7 +141,7 @@ public class Department
     public Result Delete()
     {
         //Нельзя удалить корень 
-        if (this.ParentDepartment == null)
+        if (ParentDepartmentId == null)
         {
             return Result.Failure<Department>($"The department can`t be delete due to parentDepartment is null");
         }

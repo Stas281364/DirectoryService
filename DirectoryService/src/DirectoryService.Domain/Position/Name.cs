@@ -6,9 +6,9 @@ public record Name
 {
     private const ushort MIN_LENGHT = 3;
     private const ushort MAX_LENGTH = 100;
-    private string Value { get; }
+    public string Value { get; }
 
-    private Name(string value)
+    public Name(string value)
     {
         Value = value;
     }

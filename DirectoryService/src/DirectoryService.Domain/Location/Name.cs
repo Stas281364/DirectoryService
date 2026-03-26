@@ -8,7 +8,7 @@ public record Name
     private const ushort MAX_LENGTH = 120;
     private string Value { get; }
 
-    private Name(string value)
+    public Name(string value)
     {
         Value = value;
     }
