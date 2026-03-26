@@ -13,7 +13,7 @@ public class Department
     public DepartmentId Id { get; private set; }
     public Name DepartmentName { get; private set; } //ValueObject
     public Identifier Identifier { get; private set; } //ValueObject
-    public Guid? ParentDepartmentId { get; private set; } //ParentId/Foreing key/ null = корень
+    public DepartmentId? ParentDepartmentId { get; private set; } //ParentId/Foreing key/ null = корень
     public Path Path { get; private set; } //ValueObject
     public short Depth { get; private set; } // Глубина подразделения
     public bool IsActive { get; private set; } // для soft delete
@@ -32,7 +32,7 @@ public class Department
     {
     }
 
-    private Department(Name name, Identifier identifier, Guid parentDepartment, Path path, short depth)
+    private Department(Name name, Identifier identifier, DepartmentId parentDepartment, Path path, short depth)
     {
         Id = new DepartmentId(Guid.NewGuid());
         DepartmentName = name;
@@ -46,7 +46,7 @@ public class Department
     }
         
     //Создане модели
-    public static Result<Department> Create(Name name, Identifier identifier, Guid parentDepartmentId, Path path, short depth)
+    public static Result<Department> Create(Name name, Identifier identifier, DepartmentId parentDepartmentId, Path path, short depth)
     {
         //return new Result<Department>(); /// МОЖНО ТАК!!! 
         //Result.Success<Department>(new Department(...))  ///ИЛИ МОЖНО ТАК!!! 
@@ -88,7 +88,7 @@ public class Department
     }
 
     //Изменение Parent
-    public Result ChangeParentDepartment(Guid parentDepartmentId)
+    public Result ChangeParentDepartment(DepartmentId parentDepartmentId)
     {
         if (parentDepartmentId == null ||  //Если корень
             parentDepartmentId == ParentDepartmentId || //Если тот же parent

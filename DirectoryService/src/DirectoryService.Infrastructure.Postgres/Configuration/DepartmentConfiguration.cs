@@ -40,7 +40,9 @@ public class DepartmentConfiguration : IEntityTypeConfiguration<Department>
 
         builder.Property(d => d.ParentDepartmentId)
             .IsRequired(false)
-            .HasColumnName("parent_department_id");
+            .HasColumnName("parent_department_id")
+            .HasConversion(d => d.value,
+            d => new DepartmentId(d));
         
         builder.Property(d => d.Path)
             .HasConversion(
@@ -67,12 +69,11 @@ public class DepartmentConfiguration : IEntityTypeConfiguration<Department>
             .IsRequired()
             .HasColumnName("updated_at");
 
-        builder.HasMany(d => d.ChildDepartments)
-            .WithOne()
-            .IsRequired(false)
-            .OnDelete(DeleteBehavior.Restrict)
-            .HasForeignKey(d => d.ParentDepartmentId);
-
+        builder.HasOne<Department>()
+            .WithMany(d => d.ChildDepartments)
+            .HasForeignKey(d => d.ParentDepartmentId)
+            .OnDelete(DeleteBehavior.Restrict);
+        
         builder.HasMany(d => d.DepartmentLocations)
             .WithOne()
             .HasForeignKey(d => d.DepartmentId);

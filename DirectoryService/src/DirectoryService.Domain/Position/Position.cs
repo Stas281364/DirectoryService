@@ -5,13 +5,14 @@ namespace DirectoryService.Domain.Position;
 
 public class Position
 {
+    private List<DepartmentPosition.DepartmentPosition> _departmentPositions = [];
     public PositionId Id { get; private set; }
     public Name PositionName { get; private set; }
     public string? Description { get; private set; }
     public bool IsActive { get; private set; } //soft-delete
     public DateTime CreatedAt { get; private set; } //utc
     public DateTime UpdatedAt { get; private set; } //utc
-    public DepartmentId DepartmentId { get; private set; }
+    public IReadOnlyCollection<DepartmentPosition.DepartmentPosition> DepartmentPositions => _departmentPositions;
 
     //EF core error
     private Position()
