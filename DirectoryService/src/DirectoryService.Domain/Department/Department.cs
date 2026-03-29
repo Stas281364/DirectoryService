@@ -1,5 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
-using DirectoryService.Contracts;
+using DepartmentPositionEntity = DirectoryService.Domain.DepartmentPosition.DepartmentPosition;
+using DepartmentLocationEntity = DirectoryService.Domain.DepartmentLocation.DepartmentLocation;
 
 namespace DirectoryService.Domain.Department;
 
@@ -7,13 +8,14 @@ public class Department
 {
     ////////////////////Private
     private readonly List<Department> _childDepartments = [];
-    private readonly List<DepartmentLocation.DepartmentLocation> _departmentLocations = [];
-    private readonly List<DepartmentPosition.DepartmentPosition> _departmentPositions = [];
+    private readonly List<DepartmentLocationEntity> _departmentLocations = [];
+    private readonly List<DepartmentPositionEntity> _departmentPositions = [];
     ////////////////////Public
     public DepartmentId Id { get; private set; }
     public Name DepartmentName { get; private set; } //ValueObject
     public Identifier Identifier { get; private set; } //ValueObject
     public DepartmentId? ParentDepartmentId { get; private set; } //ParentId/Foreing key/ null = корень
+    public Department? ParentDepartment { get; private set; } //ParentId/Foreing key/ null = корень
     public Path Path { get; private set; } //ValueObject
     public short Depth { get; private set; } // Глубина подразделения
     public bool IsActive { get; private set; } // для soft delete
@@ -32,12 +34,13 @@ public class Department
     {
     }
 
-    private Department(Name name, Identifier identifier, DepartmentId parentDepartment, Path path, short depth)
+    private Department(Name name, Identifier identifier, Department? parentDepartment, Path path, short depth)
     {
         Id = new DepartmentId(Guid.NewGuid());
         DepartmentName = name;
         Identifier = identifier;
-        ParentDepartmentId = parentDepartment;
+        ParentDepartment = parentDepartment;
+        ParentDepartmentId = parentDepartment.Id;
         Path = path;
         Depth = depth;
         IsActive = true;
@@ -46,14 +49,14 @@ public class Department
     }
         
     //Создане модели
-    public static Result<Department> Create(Name name, Identifier identifier, DepartmentId parentDepartmentId, Path path, short depth)
+    public static Result<Department> Create(Name name, Identifier identifier, Department? parentDepartment, Path path, short depth)
     {
         //return new Result<Department>(); /// МОЖНО ТАК!!! 
         //Result.Success<Department>(new Department(...))  ///ИЛИ МОЖНО ТАК!!! 
         //return new Department(,,,); /// ИЛИ ТАК!!! 
         
         //Валидация уже имеется в Name Identifier Path
-        return new Department(name, identifier, parentDepartmentId, path, depth);
+        return new Department(name, identifier, parentDepartment, path, depth);
     }
 
     //Изменение модели
@@ -88,16 +91,17 @@ public class Department
     }
 
     //Изменение Parent
-    public Result ChangeParentDepartment(DepartmentId parentDepartmentId)
+    public Result ChangeParentDepartment(Department? parentDepartment)
     {
-        if (parentDepartmentId == null ||  //Если корень
-            parentDepartmentId == ParentDepartmentId || //Если тот же parent
+        if (parentDepartment == null ||  //Если корень
+            parentDepartment == ParentDepartment || //Если тот же parent
             ChildDepartments.Count != 0)   // Если есть дети
         {
             return Result.Failure<Department>($"The parent department can`t be changed");
         }
 
-        ParentDepartmentId = parentDepartmentId;
+        ParentDepartment = parentDepartment;
+        ParentDepartmentId = parentDepartment.Id;
         UpdatedAt = DateTime.UtcNow;
         return Result.Success();
     }
@@ -141,7 +145,7 @@ public class Department
     public Result Delete()
     {
         //Нельзя удалить корень 
-        if (ParentDepartmentId == null)
+        if (ParentDepartment == null)
         {
             return Result.Failure<Department>($"The department can`t be delete due to parentDepartment is null");
         }

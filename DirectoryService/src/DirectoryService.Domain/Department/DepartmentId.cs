@@ -1,3 +1,3 @@
 ﻿namespace DirectoryService.Domain.Department;
 
-public record DepartmentId(Guid value);
+public record DepartmentId(Guid Value);

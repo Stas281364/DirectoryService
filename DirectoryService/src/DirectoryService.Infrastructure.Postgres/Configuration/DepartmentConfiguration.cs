@@ -16,7 +16,7 @@ public class DepartmentConfiguration : IEntityTypeConfiguration<Department>
         builder.Property(d => d.Id)
             .IsRequired()
             .HasConversion(
-                v => v.value,
+                v => v.Value,
                 v => new DepartmentId(v)
             );
 
@@ -38,11 +38,11 @@ public class DepartmentConfiguration : IEntityTypeConfiguration<Department>
             .HasMaxLength(DepartmentConstants.MaxLenght150)
             .HasColumnName("identifier");
 
-        builder.Property(d => d.ParentDepartmentId)
+        /*builder.Property(d => d.ParentDepartment)
             .IsRequired(false)
             .HasColumnName("parent_department_id")
             .HasConversion(d => d.value,
-            d => new DepartmentId(d));
+            d => new DepartmentId(d.value));*/
         
         builder.Property(d => d.Path)
             .HasConversion(
@@ -69,10 +69,16 @@ public class DepartmentConfiguration : IEntityTypeConfiguration<Department>
             .IsRequired()
             .HasColumnName("updated_at");
 
+        /*
         builder.HasOne<Department>()
             .WithMany(d => d.ChildDepartments)
             .HasForeignKey(d => d.ParentDepartmentId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Restrict);*/
+        
+        builder.HasOne(d => d.ParentDepartment)
+            .WithMany(d => d.ChildDepartments)
+            .HasForeignKey(d => d.ParentDepartmentId)
+            .IsRequired(false);
         
         builder.HasMany(d => d.DepartmentLocations)
             .WithOne()

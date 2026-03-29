@@ -18,7 +18,7 @@ public class DepartmentPositionConfiguration : IEntityTypeConfiguration<Departme
             .HasColumnName("department_id")
             .IsRequired()
             .HasConversion(
-                value => value.value,
+                value => value.Value,
                 value => new DepartmentId(value)
             );
         
