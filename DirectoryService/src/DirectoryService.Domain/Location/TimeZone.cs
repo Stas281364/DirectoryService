@@ -6,7 +6,7 @@ public record TimeZone
 {
     public string Value { get; }
 
-    private TimeZone(string value)
+    public TimeZone(string value)
     {
         Value = value;
     }

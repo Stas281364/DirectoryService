@@ -1,24 +1,28 @@
 ﻿using CSharpFunctionalExtensions;
+using DirectoryService.Domain.Department;
 
 namespace DirectoryService.Domain.Position;
 
 public class Position
 {
-    public Guid Id { get; set; }
-    public Name NamePosition { get; set; }
-    public string? Description { get; set; }
-    public bool IsActive { get; set; } //soft-delete
-    public DateTime CreatedAt { get; set; } //utc
-    public DateTime UpdatedAt { get; set; } //utc
+    private List<DepartmentPosition.DepartmentPosition> _departmentPositions = [];
+    public PositionId Id { get; private set; }
+    public Name PositionName { get; private set; }
+    public string? Description { get; private set; }
+    public bool IsActive { get; private set; } //soft-delete
+    public DateTime CreatedAt { get; private set; } //utc
+    public DateTime UpdatedAt { get; private set; } //utc
+    public IReadOnlyCollection<DepartmentPosition.DepartmentPosition> DepartmentPositions => _departmentPositions;
 
     //EF core error
     private Position()
     {
     }
 
-    private Position(Name name, string? description)
+    private Position(Name positionName, string? description)
     {
-        NamePosition = name;
+        Id = new PositionId(Guid.NewGuid());
+        PositionName = positionName;
         Description = description;
         IsActive = true;
         CreatedAt = DateTime.UtcNow;
@@ -37,7 +41,7 @@ public class Position
 
     public Result ChangeName(Name name)
     {
-        NamePosition = name;
+        PositionName = name;
         UpdatedAt = DateTime.UtcNow;
         return Result.Success();
     }

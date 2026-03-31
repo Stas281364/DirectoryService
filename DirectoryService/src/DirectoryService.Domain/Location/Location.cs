@@ -4,14 +4,16 @@ namespace DirectoryService.Domain.Location;
 
 public class Location
 {
-    public Guid Id { get; private set; }
+    private List<DepartmentLocation.DepartmentLocation> _departmentLocations = [];
+    public LocationId Id { get; private set; }
     public Name LocationName { get; private set; } //ValueObject
     public Address Address { get; private set; } //в бд может быть несколько столбцов или jsonb
     public TimeZone TimeZone { get; private set; } //IANA-код
     public bool IsActive { get; private set; } //soft-delete
     public DateTime CreatedAt { get; private set; } //utc
     public DateTime UpdatedAt { get; private set; } //utc
-
+    public IReadOnlyList<DepartmentLocation.DepartmentLocation> DepartmentLocations => _departmentLocations;
+    
     //EF error
     private Location()
     {
@@ -19,7 +21,7 @@ public class Location
 
     private Location(Name locationName, Address address, TimeZone timeZone)
     {
-        Id = Guid.NewGuid();
+        Id = new LocationId(Guid.NewGuid());
         LocationName = locationName;
         Address = address;
         TimeZone = timeZone;

@@ -1,8 +1,11 @@
-﻿namespace DirectoryService.Domain.DepartmentLocation;
+﻿using DirectoryService.Domain.Department;
+using DirectoryService.Domain.Location;
 
-public class DepartmentLocation
+namespace DirectoryService.Domain.DepartmentLocation;
+
+public sealed class DepartmentLocation
 {
-    public Guid Id { get; set; }
-    public required List<Guid> DepartmentIds { get; set; }
-    public required List<Guid> LocationIds { get; set; }
+    public Guid Id { get; init; }
+    public required LocationId LocationId { get; init; }
+    public required DepartmentId DepartmentId { get; init; }
 }

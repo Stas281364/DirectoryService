@@ -9,6 +9,10 @@
     <ItemGroup>
         <PackageReference Include="CSharpFunctionalExtensions" Version="3.6.0" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.10"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.14">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
     </ItemGroup>
 
     <ItemGroup>
@@ -17,6 +21,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\DirectoryService.Domain\DirectoryService.Domain.csproj" />
+      <ProjectReference Include="..\DirectoryService.Infrastructure.Postgres\DirectoryService.Infrastructure.Postgres.csproj" />
       <ProjectReference Include="..\DirectoryService.Presenters\DirectoryService.Presenters.csproj" />
     </ItemGroup>
 

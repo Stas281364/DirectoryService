@@ -8,8 +8,13 @@ public record Path
     private const UInt16 MIN_LENGHT = 3;
     private const UInt16 MAX_LENGTH = 150;
     private string Value { get; }
-    
-    private Path(string value)
+
+    public Path()
+    {
+        
+    }
+
+    public Path(string value)
     {
         Value = value;
     }

@@ -9,7 +9,12 @@ public record Identifier
     private const UInt16 MAX_LENGTH = 150;
     private string Value { get; }
 
-    private Identifier(string value)
+    public Identifier()
+    {
+        
+    }
+
+    public Identifier(string value)
     {
         Value = value;
     }

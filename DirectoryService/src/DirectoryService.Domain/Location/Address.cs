@@ -6,14 +6,14 @@ namespace DirectoryService.Domain.Location;
 
 public record Address
 {
-    private string Country { get; init; }
-    private string City { get; init; }
-    private string Street { get; init; }
-    private string HouseNumber { get; init; }
-    private string ApartmentNumber { get; init; }
+    public string Country { get; }
+    public string City { get;  }
+    public string Street { get; }
+    public string HouseNumber { get; }
+    public string ApartmentNumber { get; }
     
 
-    private Address(string country, 
+    public Address(string country, 
         string city, 
         string street,  
         string houseNumber, 
