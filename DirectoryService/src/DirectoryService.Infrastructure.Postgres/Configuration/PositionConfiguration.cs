@@ -1,8 +1,8 @@
-﻿using DirectoryService.Domain.Location;
-using DirectoryService.Domain.Position;
+﻿using DirectoryService.Domain.Locations;
+using DirectoryService.Domain.Positions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using TimeZone = DirectoryService.Domain.Location.TimeZone;
+
 
 namespace DirectoryService.Infrastructure.Postgres.Configuration;
 
@@ -24,7 +24,7 @@ public class PositionConfiguration : IEntityTypeConfiguration<Position>
         builder.Property(p => p.PositionName)
             .HasConversion(
                 v => v.ToString(), // в БД (string)
-                v => new Domain.Position.Name(v) // из БД
+                v => new Domain.Positions.Name(v) // из БД
             )
             .IsRequired()
             .HasMaxLength(PositionConstants.MaxLenght100)

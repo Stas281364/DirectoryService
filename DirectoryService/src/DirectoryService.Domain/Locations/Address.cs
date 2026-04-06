@@ -2,7 +2,7 @@
 using CSharpFunctionalExtensions;
 using DirectoryService.Contracts;
 
-namespace DirectoryService.Domain.Location;
+namespace DirectoryService.Domain.Locations;
 
 public record Address
 {

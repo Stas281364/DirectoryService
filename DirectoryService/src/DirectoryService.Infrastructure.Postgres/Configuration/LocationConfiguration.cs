@@ -1,10 +1,8 @@
-﻿using DirectoryService.Domain.Department;
-using DirectoryService.Domain.Location;
+﻿using DirectoryService.Domain.Departments;
+using DirectoryService.Domain.Locations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Name = DirectoryService.Domain.Department.Name;
-using TimeZone = DirectoryService.Domain.Location.TimeZone;
-using System.Text.Json;
+
 
 namespace DirectoryService.Infrastructure.Postgres.Configuration;
 
@@ -25,8 +23,8 @@ public class LocationConfiguration : IEntityTypeConfiguration<Location>
 
         builder.Property(l => l.LocationName)
             .HasConversion(
-                v => v.ToString(), // в БД (string)
-                v => new Domain.Location.Name(v) // из БД
+                v => v.Value, // в БД (string)
+                v => new Domain.Locations.Name(v) // из БД
             )
             .IsRequired()
             .HasMaxLength(LocationConstants.MaxLenght120)
@@ -63,8 +61,8 @@ public class LocationConfiguration : IEntityTypeConfiguration<Location>
 
         builder.Property(l => l.TimeZone)
             .HasConversion(
-                v => v.ToString(),
-                v => new TimeZone(v)
+                v => v.Value,
+                v => new Domain.Locations.TimeZone(v)
             )
             .IsRequired()
             .HasColumnName("timezone");
