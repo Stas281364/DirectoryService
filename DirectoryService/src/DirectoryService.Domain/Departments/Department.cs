@@ -1,15 +1,16 @@
 ﻿using CSharpFunctionalExtensions;
-using DepartmentPositionEntity = DirectoryService.Domain.DepartmentPosition.DepartmentPosition;
-using DepartmentLocationEntity = DirectoryService.Domain.DepartmentLocation.DepartmentLocation;
+using DirectoryService.Domain.DepartmentLocations;
+using DirectoryService.Domain.DepartmentPositions;
 
-namespace DirectoryService.Domain.Department;
+
+namespace DirectoryService.Domain.Departments;
 
 public class Department
 {
     ////////////////////Private
     private readonly List<Department> _childDepartments = [];
-    private readonly List<DepartmentLocationEntity> _departmentLocations = [];
-    private readonly List<DepartmentPositionEntity> _departmentPositions = [];
+    private readonly List<DepartmentLocation> _departmentLocations = [];
+    private readonly List<DepartmentPosition> _departmentPositions = [];
     ////////////////////Public
     public DepartmentId Id { get; private set; }
     public Name DepartmentName { get; private set; } //ValueObject
@@ -23,8 +24,8 @@ public class Department
     public DateTime CreatedAt { get; private set; }
     public DateTime UpdatedAt { get; private set; }
     
-    public IReadOnlyList<DepartmentLocation.DepartmentLocation> DepartmentLocations => _departmentLocations;
-    public IReadOnlyList<DepartmentPosition.DepartmentPosition> DepartmentPositions => _departmentPositions;
+    public IReadOnlyList<DepartmentLocation> DepartmentLocations => _departmentLocations;
+    public IReadOnlyList<DepartmentPosition> DepartmentPositions => _departmentPositions;
 
 
     //public List<Guid> IdBotDepartments { get; set; } = [];

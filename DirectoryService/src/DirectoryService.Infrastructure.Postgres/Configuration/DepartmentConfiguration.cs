@@ -1,7 +1,7 @@
-﻿using DirectoryService.Domain.Department;
+﻿using DirectoryService.Domain.Departments;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Path = System.IO.Path;
+
 
 namespace DirectoryService.Infrastructure.Postgres.Configuration;
 
@@ -47,7 +47,7 @@ public class DepartmentConfiguration : IEntityTypeConfiguration<Department>
         builder.Property(d => d.Path)
             .HasConversion(
                 v => v.ToString(),
-                v => new Domain.Department.Path(v)
+                v => new Domain.Departments.Path(v)
             )
             .IsRequired()
             .HasColumnName("path");

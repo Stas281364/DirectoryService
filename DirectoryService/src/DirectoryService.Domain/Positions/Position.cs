@@ -1,18 +1,19 @@
 ﻿using CSharpFunctionalExtensions;
-using DirectoryService.Domain.Department;
+using DirectoryService.Domain.DepartmentPositions;
+using DirectoryService.Domain.Departments;
 
-namespace DirectoryService.Domain.Position;
+namespace DirectoryService.Domain.Positions;
 
 public class Position
 {
-    private List<DepartmentPosition.DepartmentPosition> _departmentPositions = [];
+    private List<DepartmentPosition> _departmentPositions = [];
     public PositionId Id { get; private set; }
     public Name PositionName { get; private set; }
     public string? Description { get; private set; }
     public bool IsActive { get; private set; } //soft-delete
     public DateTime CreatedAt { get; private set; } //utc
     public DateTime UpdatedAt { get; private set; } //utc
-    public IReadOnlyCollection<DepartmentPosition.DepartmentPosition> DepartmentPositions => _departmentPositions;
+    public IReadOnlyCollection<DepartmentPosition> DepartmentPositions => _departmentPositions;
 
     //EF core error
     private Position()

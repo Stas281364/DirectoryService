@@ -1,6 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
+using TimeZoneConverter;
 
-namespace DirectoryService.Domain.Location;
+namespace DirectoryService.Domain.Locations;
 
 public record TimeZone
 {
@@ -18,7 +19,8 @@ public record TimeZone
 
         try
         {
-            TimeZoneInfo.FindSystemTimeZoneById(value);
+            //TimeZoneInfo.FindSystemTimeZoneById(value);
+            TZConvert.GetTimeZoneInfo(value);
         }
         catch
         {
