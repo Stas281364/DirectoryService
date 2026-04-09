@@ -6,7 +6,7 @@ using DirectoryService.Contracts.Location;
 using DirectoryService.Domain.Locations;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
-using DirectoryService.Application.Locations;
+using TimeZone = DirectoryService.Domain.Locations.TimeZone;
 
 namespace DirectoryService.Application.Location;
 
@@ -25,10 +25,10 @@ public class LocationService : ILocationService
         _logger = logger;
     }
 
-    public async Task<Guid> Create(CreateLocationDto locationDto, CancellationToken cancellationToken)
+    public async Task<Guid> Create(CreateLocationDto request, CancellationToken cancellationToken)
     {
         //Создание валидности(Проверка входных данных / проверка данных бд)
-        var validationResult = await _validator.ValidateAsync(locationDto, cancellationToken);
+        var validationResult = await _validator.ValidateAsync(request, cancellationToken);
 
         if (!validationResult.IsValid)
         {
@@ -38,17 +38,18 @@ public class LocationService : ILocationService
         //Валидация бизнесс логики
 
         //Создание сущности 
-        var locationNameResult = Name.Create(locationDto.Name);
-        var locationAddressResult = Address.Create(locationDto.Address);
-        var locationTimeZoneResult = Domain.Locations.TimeZone.Create(locationDto.TimeZone);
-
-        var result = Domain.Locations.Location.Create(locationNameResult.GetValueOrDefault(),
+        var locationNameResult = Name.Create(request.Name);
+        var locationAddressResult = Address.Create(request.Address);
+        var locationTimeZoneResult = TimeZone.Create(request.TimeZone);
+        
+        var result = Domain.Locations.Location.Create(
+            locationNameResult.GetValueOrDefault(),
             locationAddressResult.Value,
             locationTimeZoneResult.Value);
         
         if (result.IsFailure)
         {
-            ///код
+            //Код
         }
 
         //Сохранение сущности Department в БД

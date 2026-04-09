@@ -7,6 +7,6 @@ namespace DirectoryService.Application.Locations;
 
 public interface ILocationService
 {
-    Task<Guid> Create(CreateLocationDto locationDto, CancellationToken cancellationToken);
+    Task<Guid> Create(CreateLocationDto request, CancellationToken cancellationToken);
     Task UpdateById(Guid id, UpdateLocationDto locationDto, CancellationToken cancellationToken);
 }

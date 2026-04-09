@@ -18,9 +18,9 @@ public class LocationController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateLocationDto locationDto, CancellationToken cancellationToken)
+    public async Task<IActionResult> Create([FromBody] CreateLocationDto request, CancellationToken cancellationToken)
     {
-        var locationId = await _locationService.Create(locationDto, cancellationToken);
+        var locationId = await _locationService.Create(request, cancellationToken);
         return Ok($"Created Location with id: {locationId}");
     }
 
