@@ -1,17 +1,27 @@
-﻿using DirectoryService.Contracts;
+﻿using DirectoryService.Application.Location;
+using DirectoryService.Application.Locations;
+using DirectoryService.Contracts;
+using DirectoryService.Contracts.Location;
+using DirectoryService.Domain.Locations;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DirectoryService.Presenter;
 
 [ApiController]
-[Route("[controller]")]
+[Route("/api/locations")]
 public class LocationController : Controller
 {
-    [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateLocationDto locationDto, CancellationToken cancellationToken)
+    private readonly ILocationService _locationService;
+    public LocationController(ILocationService locationService)
     {
-        
-        return Ok("Create Location");
+        _locationService = locationService;
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Create([FromBody] CreateLocationDto request, CancellationToken cancellationToken)
+    {
+        var locationId = await _locationService.Create(request, cancellationToken);
+        return Ok($"Created Location with id: {locationId}");
     }
 
     [HttpGet]

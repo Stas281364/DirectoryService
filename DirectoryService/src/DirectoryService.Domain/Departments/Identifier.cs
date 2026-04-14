@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using CSharpFunctionalExtensions;
 
-namespace DirectoryService.Domain.Department;
+namespace DirectoryService.Domain.Departments;
 
 public record Identifier
 {

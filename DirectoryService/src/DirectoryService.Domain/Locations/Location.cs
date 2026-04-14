@@ -1,10 +1,11 @@
 ﻿using CSharpFunctionalExtensions;
+using DirectoryService.Domain.DepartmentLocations;
 
-namespace DirectoryService.Domain.Location;
+namespace DirectoryService.Domain.Locations;
 
 public class Location
 {
-    private List<DepartmentLocation.DepartmentLocation> _departmentLocations = [];
+    private List<DepartmentLocation> _departmentLocations = [];
     public LocationId Id { get; private set; }
     public Name LocationName { get; private set; } //ValueObject
     public Address Address { get; private set; } //в бд может быть несколько столбцов или jsonb
@@ -12,7 +13,7 @@ public class Location
     public bool IsActive { get; private set; } //soft-delete
     public DateTime CreatedAt { get; private set; } //utc
     public DateTime UpdatedAt { get; private set; } //utc
-    public IReadOnlyList<DepartmentLocation.DepartmentLocation> DepartmentLocations => _departmentLocations;
+    public IReadOnlyList<DepartmentLocation> DepartmentLocations => _departmentLocations;
     
     //EF error
     private Location()
@@ -26,8 +27,8 @@ public class Location
         Address = address;
         TimeZone = timeZone;
         IsActive = true;
-        CreatedAt = DateTime.Now;
-        UpdatedAt = DateTime.Now;
+        CreatedAt = DateTime.UtcNow;
+        UpdatedAt = DateTime.UtcNow;
     }
 
     //Создане модели
@@ -60,7 +61,7 @@ public class Location
     public Result Delete()
     {
         IsActive = false;
-        UpdatedAt = DateTime.Now;
+        UpdatedAt = DateTime.UtcNow;
         return Result.Success();
     }
     

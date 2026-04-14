@@ -1,12 +1,12 @@
 ﻿using CSharpFunctionalExtensions;
 
-namespace DirectoryService.Domain.Location;
+namespace DirectoryService.Domain.Locations;
 
 public record Name
 {
     private const ushort MIN_LENGHT = 3;
     private const ushort MAX_LENGTH = 120;
-    private string Value { get; }
+    public string Value { get; }
 
     public Name(string value)
     {

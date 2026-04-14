@@ -1,7 +1,7 @@
-﻿using DirectoryService.Domain.Department;
-using DirectoryService.Domain.Position;
+﻿using DirectoryService.Domain.Departments;
+using DirectoryService.Domain.Positions;
 
-namespace DirectoryService.Domain.DepartmentPosition;
+namespace DirectoryService.Domain.DepartmentPositions;
 
 public class DepartmentPosition
 {

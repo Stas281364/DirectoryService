@@ -13,10 +13,12 @@
 
     <ItemGroup>
       <PackageReference Include="CSharpFunctionalExtensions" Version="3.6.0" />
+      <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.14">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
+      <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.14" />
     </ItemGroup>
 
 </Project>

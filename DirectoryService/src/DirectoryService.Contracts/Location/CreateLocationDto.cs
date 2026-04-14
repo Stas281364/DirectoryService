@@ -1,9 +1,9 @@
-﻿namespace DirectoryService.Contracts;
+﻿namespace DirectoryService.Contracts.Location;
 
 public record CreateLocationDto(
-    string Name, 
-    string Adress, 
-    string TimeZone, 
-    bool IsActive, 
-    DateTime CreatedAt,  
+    string Name,
+    AddressDto Address,
+    string TimeZone,
+    bool IsActive,
+    DateTime CreatedAt,
     DateTime UpdatedAt);
