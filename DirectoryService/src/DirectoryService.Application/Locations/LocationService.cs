@@ -53,6 +53,7 @@ public class LocationService : ILocationService
         }
 
         //Сохранение сущности Department в БД
+        //await _locationRepository.AddAsync(result.Value, cancellationToken);
         await _locationRepository.AddAsync(result.Value, cancellationToken);
         
         //Логгирование об успехе или отказной ситуации(ошибки сохранения)

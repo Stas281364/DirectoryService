@@ -5,7 +5,7 @@ using DirectoryService.Domain.Locations;
 
 namespace DirectoryService.Infrastructure.Postgres;
 
-public class LocationRepository : ILocationRepository
+public class  LocationRepository : ILocationRepository
 {
     private readonly DirectoryServiceDbContext _dbContext;
 

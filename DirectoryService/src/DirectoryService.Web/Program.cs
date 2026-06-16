@@ -21,8 +21,11 @@ builder.Services.AddScoped<DirectoryServiceDbContext>(_ =>
 
 //Регистрация моих сервися в dependencyInjection
 builder.Services.AddProgramDependencies();
-builder.Services.AddScoped<ILocationRepository, LocationRepository>();
+//Здесь я говорю DI что подаставить (какой объект класса) когда заходит речь про ILocationRepository
+//builder.Services.AddScoped<ILocationRepository, LocationRepository>(); //Для EF core реализации
+builder.Services.AddScoped<ILocationRepository, NpgSqlLocationRepositoryDapper>(); //Для Dapper реализации
 
+builder.Services.AddSingleton<INpgSqlConnectionFactoryDapper, NpgSqlConnectionFactoryDapper>(); //Для Dapper реализации
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
