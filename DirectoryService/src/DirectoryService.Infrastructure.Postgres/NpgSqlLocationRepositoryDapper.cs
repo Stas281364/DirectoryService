@@ -130,16 +130,16 @@ public class NpgSqlLocationRepositoryDapper : ILocationRepository
 
     public Task<Guid> UpdateAsync(Guid locationId, Location location, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        throw new Exception("Not Implemented");
     }
 
     public Task<Guid> DeleteAsync(Guid locationId, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        throw new Exception("Not Implemented");
     }
     
     public Task<Location> GetByIdAsync(Guid locationId, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        throw new Exception("Not Implemented");
     }
 }

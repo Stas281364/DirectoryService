@@ -14,7 +14,7 @@ public class Department
     ////////////////////Public
     public DepartmentId Id { get; private set; }
     public Name DepartmentName { get; private set; } //ValueObject
-    public Identifier Identifier { get; private set; } //ValueObject
+    public Identifier Identifier { get; private set; } //ValueObject //slug
     public DepartmentId? ParentDepartmentId { get; private set; } //ParentId/Foreing key/ null = корень
     public Department? ParentDepartment { get; private set; } //ParentId/Foreing key/ null = корень
     public Path Path { get; private set; } //ValueObject
