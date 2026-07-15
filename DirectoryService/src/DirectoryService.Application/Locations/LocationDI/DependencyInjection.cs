@@ -1,4 +1,5 @@
-﻿using DirectoryService.Application.Location;
+﻿using DirectoryService.Application.Abstractions;
+using DirectoryService.Application.Location;
 using DirectoryService.Application.Locations;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,6 +17,7 @@ public static class DependencyInjection
 
         //Сервис локации
         services.AddScoped<ILocationService, LocationService>();
+        services.AddScoped<ICommandHanlder<Guid, CreateLocationCommand>, CreateLocationHandler>();
         
         
         return services;

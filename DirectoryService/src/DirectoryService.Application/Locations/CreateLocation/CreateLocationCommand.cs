@@ -1,5 +1,6 @@
-﻿using DirectoryService.Contracts.Location;
+﻿using DirectoryService.Application.Abstractions;
+using DirectoryService.Contracts.Location;
 
 namespace DirectoryService.Application.Locations;
 
-public record CreateLocationCommand(CreateLocationDto locationDto, CancellationToken cancellationToken);
+public record CreateLocationCommand(CreateLocationDto locationDto, CancellationToken cancellationToken) : ICommand;

@@ -1,4 +1,5 @@
-﻿using DirectoryService.Application.Location;
+﻿using DirectoryService.Application.Abstractions;
+using DirectoryService.Application.Location;
 using DirectoryService.Application.Locations;
 using DirectoryService.Contracts;
 using DirectoryService.Contracts.Location;
@@ -18,9 +19,14 @@ public class LocationController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateLocationDto request, CancellationToken cancellationToken)
+    public async Task<IActionResult> Create([FromBody] CreateLocationDto request,
+        [FromServices] ICommandHanlder<Guid, CreateLocationCommand> handler,
+        CancellationToken cancellationToken)
     {
-        var locationId = await _locationService.Create(request, cancellationToken);
+        //var locationId = await _locationService.Create(request, cancellationToken);
+        
+        var command = new CreateLocationCommand(request, cancellationToken);
+        var locationId = await handler.Handle(command, cancellationToken);
         return Ok($"Created Location with id: {locationId}");
     }
 
