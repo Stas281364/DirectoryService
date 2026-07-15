@@ -13,6 +13,7 @@ public static class DependencyInjection
         //Общий регистрационный файл
 
         services.AddLocationService();
+        
         return services;
     }
 
