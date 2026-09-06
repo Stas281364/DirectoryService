@@ -1,6 +1,9 @@
 using DirectoryService.Application;
+using DirectoryService.Application.Abstractions;
 using DirectoryService.Application.Locations;
+using DirectoryService.Application.Departments.CreateDepartment;
 using DirectoryService.Infrastructure.Postgres;
+using DirectoryService.Infrastructure.Postgres.DepartmentRepository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,10 +23,16 @@ builder.Services.AddScoped<DirectoryServiceDbContext>(_ =>
     new DirectoryServiceDbContext(builder.Configuration.GetConnectionString("DsServiceDb")!));
 
 //Регистрация моих сервися в dependencyInjection
+builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+builder.Services.AddScoped<ICommandHandler<Guid, CreateDepartmentCommand>, CreateDepartmentHandler>();
 builder.Services.AddProgramDependencies();
+
+
 //Здесь я говорю DI что подаставить (какой объект класса) когда заходит речь про ILocationRepository
-//builder.Services.AddScoped<ILocationRepository, LocationRepository>(); //Для EF core реализации
+builder.Services.AddScoped<ILocationRepository, LocationRepository>(); //Для EF core реализации
 builder.Services.AddScoped<ILocationRepository, NpgSqlLocationRepositoryDapper>(); //Для Dapper реализации
+
+
 
 builder.Services.AddSingleton<INpgSqlConnectionFactoryDapper, NpgSqlConnectionFactoryDapper>(); //Для Dapper реализации
 var app = builder.Build();

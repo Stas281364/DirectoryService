@@ -1,6 +1,9 @@
 ﻿using DirectoryService.Application.Abstractions;
 using DirectoryService.Contracts.Location;
 
-namespace DirectoryService.Application.Locations;
+//using ICommand = DirectoryService.Application.Abstractions.ICommand;
 
-public record CreateLocationCommand(CreateLocationDto locationDto, CancellationToken cancellationToken) : ICommand;
+namespace DirectoryService.Application.Locations.CreateLocation;
+
+//(команда, токен)
+public record CreateLocationCommand(CreateLocationDto locationDto, CancellationToken cancellationToken) : ICommands;

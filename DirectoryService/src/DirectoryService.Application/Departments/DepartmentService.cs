@@ -3,10 +3,14 @@ using DirectoryService.Domain.Departments;
 
 namespace DirectoryService.Application;
 
-public class DepartmentService
+public class DepartmentService :  IDepartmentService
 {
+    
+    /*DepartmentService(
+        
+        )*/
     //[HttpPost]
-    public Task Create(CreateDepartmentDto departmentDto, CancellationToken cancellationToken)
+    public Task<Guid> Create(CreateDepartmentDto departmentDto, CancellationToken cancellationToken)
     {
         //Создание валидности(Проверка входных данных / проверка данных бд)
 
@@ -20,7 +24,7 @@ public class DepartmentService
         //Сохранение сущности Department в БД
 
         //Логгирование об успехе или отказной ситуации(ошибки сохранения)
-        return Task.CompletedTask;
+        return Task<Guid>.Factory.StartNew(() => new Guid());
     }
 
 

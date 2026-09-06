@@ -28,6 +28,7 @@ public class DirectoryServiceDbContext : DbContext
     }
     
     public DbSet<Location> Locations => Set<Location>();
+    public DbSet<Department> Departments => Set<Department>();
 
     public ILoggerFactory CreateLoggerFactory() => LoggerFactory.Create(builder =>
     {
