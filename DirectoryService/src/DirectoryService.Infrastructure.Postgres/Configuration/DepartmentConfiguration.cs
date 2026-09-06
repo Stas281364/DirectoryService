@@ -31,7 +31,7 @@ public class DepartmentConfiguration : IEntityTypeConfiguration<Department>
 
         builder.Property(d => d.Identifier)
             .HasConversion(
-                v => v.ToString(),
+                v => v.Value,
                 v => new Identifier(v)
             )
             .IsRequired()
@@ -46,7 +46,7 @@ public class DepartmentConfiguration : IEntityTypeConfiguration<Department>
         
         builder.Property(d => d.Path)
             .HasConversion(
-                v => v.ToString(),
+                v => v.Value,
                 v => new Domain.Departments.Path(v)
             )
             .IsRequired()

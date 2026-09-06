@@ -54,7 +54,7 @@ public class LocationService : ILocationService
 
         //Сохранение сущности Department в БД
         //await _locationRepository.AddAsync(result.Value, cancellationToken);
-        await _locationRepository.AddAsync(result.Value, cancellationToken);
+        await _locationRepository.AddAsyncLocation(result.Value, cancellationToken);
         
         //Логгирование об успехе или отказной ситуации(ошибки сохранения)
         _logger.LogInformation($"Location created with id {result.Value.Id}", result.Value.Id);

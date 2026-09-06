@@ -1,4 +1,5 @@
-﻿using DirectoryService.Application.Location;
+﻿using DirectoryService.Application.DepartmentsDI;
+using DirectoryService.Application.Location;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -12,7 +13,10 @@ public static class DependencyInjection
         services.AddWebDependencies();
         //Общий регистрационный файл
 
+        //Location
         services.AddLocationService();
+        //Department
+        services.AddDepartmentService();
         
         return services;
     }

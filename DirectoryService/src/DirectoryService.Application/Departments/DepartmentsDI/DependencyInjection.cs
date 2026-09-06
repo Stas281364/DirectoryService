@@ -1,15 +1,14 @@
 ﻿using DirectoryService.Application.Abstractions;
 using DirectoryService.Application.Location;
 using DirectoryService.Application.Locations;
-using DirectoryService.Application.Locations.CreateLocation;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DirectoryService.Application;
+namespace DirectoryService.Application.DepartmentsDI;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddLocationService(this IServiceCollection services)
+    public static IServiceCollection AddDepartmentService(this IServiceCollection services)
     {
         //Добавление(регистрация) всех сервисов в dependencyInjection
         
@@ -17,8 +16,7 @@ public static class DependencyInjection
         services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
 
         //Сервис локации
-        services.AddScoped<ILocationService, LocationService>();
-        services.AddScoped<ICommandHandler<Guid, CreateLocationCommand>, CreateLocationHandler>();
+        //services.AddScoped<ICommandHandler<Guid, CreateDepartmentCommand>, CreateDepartmentHandler>();
         
         
         return services;

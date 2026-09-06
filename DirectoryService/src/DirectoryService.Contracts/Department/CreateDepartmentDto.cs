@@ -1,10 +1,11 @@
 ﻿namespace DirectoryService.Contracts;
 
 public record CreateDepartmentDto(
-    string Name, 
-    string Identifier, 
-    string Path, 
-    Guid? IdTopDepartment, 
+    string Name, //name
+    string Identifier, //slug
+    //string Path, 
+    Guid? IdTopDepartment, //parentId
+    List<Guid> LocationIds,
     short Depth, 
     bool IsActive, 
     DateTime CreatedAt,  
