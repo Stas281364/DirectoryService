@@ -13,4 +13,6 @@ public interface ILocationRepository
     Task<Guid> DeleteAsync(Guid locationId, CancellationToken cancellationToken);
     
     Task<Location> GetByIdAsync(Guid locationId, CancellationToken cancellationToken);
+    
+    Task<List<Guid>> GetAllExistingIdLocationAsync(List<Guid> requestIds, CancellationToken cancellationToken);
 }

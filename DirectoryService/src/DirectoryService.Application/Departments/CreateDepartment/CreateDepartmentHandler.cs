@@ -1,5 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using DirectoryService.Application.Abstractions;
+using DirectoryService.Application.Locations;
 using DirectoryService.Contracts;
 using DirectoryService.Domain.Departments;
 using FluentValidation;
@@ -13,31 +14,44 @@ public class CreateDepartmentHandler : ICommandHandler<Guid, CreateDepartmentCom
     private readonly ILogger<CreateDepartmentHandler> _logger;
     private readonly IDepartmentRepository _repository;
     private readonly IValidator<CreateDepartmentDto> _validator;
+    private readonly ILocationRepository _locationRepository;
     
     public CreateDepartmentHandler(ILogger<CreateDepartmentHandler> logger,
         IDepartmentRepository repository,
-        IValidator<CreateDepartmentDto> validator)
+        IValidator<CreateDepartmentDto> validator,
+        ILocationRepository locationRepository)
     {
         _logger = logger;
         _repository = repository;
         _validator = validator;
+        _locationRepository = locationRepository;
     }
     
     public async Task<Result<Guid>> Handle(CreateDepartmentCommand command, CancellationToken cancellationToken)
     {
         //Создание валидности (Проверка входных данных / проверка данных бд)
-        var validationResult = _validator.ValidateAsync(command.departmentDto, cancellationToken);
+        var validationResult = await _validator.ValidateAsync(command.departmentDto, cancellationToken);
 
         //Валидация бизнесс логики
-
+        if (!validationResult.IsValid)
+            return Result.Failure<Guid>(validationResult.Errors.First().ErrorMessage);
         //Создание сущности
         
         ////Надо Name
         var departmentNameResult = Name.Create(command.departmentDto.Name);
+        if (departmentNameResult.IsFailure)
+            return Result.Failure<Guid>(departmentNameResult.Error);
         ////Надо identifier(slug)
         var departmentSlugResult = Identifier.Create(command.departmentDto.Identifier);
+        if (departmentSlugResult.IsFailure)
+            return Result.Failure<Guid>(departmentSlugResult.Error);
         ////Надо ParentId
         var departmentParent = await _repository.GetByIdAsync(command.departmentDto.IdTopDepartment, cancellationToken);
+        
+        //Исключение при введеннии ID в запрос, но отсутствии такого ID в базе
+        if (command.departmentDto.IdTopDepartment != null && departmentParent.Value == null)
+            return Result.Failure<Guid>("Указанный родительский департамент не найден");
+        
         ////Надо Path
         //var departmentPath = Path.Create(command.departmentDto.Path);
         
@@ -48,6 +62,19 @@ public class CreateDepartmentHandler : ICommandHandler<Guid, CreateDepartmentCom
         //Резальтат запроса по созданию Department
         Result<Department> result;
         
+        //Проверка на "Несуществующие идентификаторы" 
+        var locationIds = command.departmentDto.LocationIds;
+        if (locationIds.Any())
+        {
+            var existingLocations = await _locationRepository.GetAllExistingIdLocationAsync(locationIds, cancellationToken);
+            var missingLocation = locationIds.Except(existingLocations);
+
+            if (missingLocation.Any())
+            {
+                return Result.Failure<Guid>("Обнаружены несуществующие Id при созданиии Department"); 
+            }
+        }
+
         //Если departmentParent нет, то это корень и создавать Department c null DepartmentParent 
         if (departmentParent.Value == null)
         {
@@ -58,7 +85,8 @@ public class CreateDepartmentHandler : ICommandHandler<Guid, CreateDepartmentCom
                 null,
                 departmentPath.Value,
                 depth,
-                command.departmentDto.LocationIds);
+                command.departmentDto.LocationIds); //Тут исправить - сделать проверку на "несуществующие идентификаторы"
+            //надо сравнить id из базы данных со списком LocationIds
         }
         else
         {

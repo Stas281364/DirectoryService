@@ -13,7 +13,7 @@ public class CreateDepartmentValidator : AbstractValidator<CreateDepartmentDto>
 
         RuleFor(departmentDto => departmentDto.Identifier).NotNull().WithMessage("Identifier must not null")
             .NotEmpty().WithMessage("Identifier is required.")
-            .Matches("^[a-zA-Z0-9 ]+$").WithMessage("Identifier must not contain letters or digits");
+            .Matches("^[a-zA-Z0-9 ]+$").WithMessage("Identifier must contain only letters, digits or spaces");
         
         // RuleFor(departmentDto => departmentDto.Path).NotNull().WithMessage("Path must not null")
         //     .NotEmpty().WithMessage("Path is required.")

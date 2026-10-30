@@ -142,4 +142,9 @@ public class NpgSqlLocationRepositoryDapper : ILocationRepository
     {
         throw new Exception("Not Implemented");
     }
+
+    public Task<List<Guid>> GetAllExistingIdLocationAsync(List<Guid> requestIds,CancellationToken cancellationToken)
+    {
+        throw new Exception("Not Implemented");
+    }
 }

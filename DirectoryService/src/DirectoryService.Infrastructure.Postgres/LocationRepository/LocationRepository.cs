@@ -2,6 +2,7 @@
 using CSharpFunctionalExtensions;
 using DirectoryService.Application.Locations;
 using DirectoryService.Domain.Locations;
+using Microsoft.EntityFrameworkCore;
 
 namespace DirectoryService.Infrastructure.Postgres;
 
@@ -26,4 +27,12 @@ public class  LocationRepository : ILocationRepository
     public Task<Guid> DeleteAsync(Guid locationId, CancellationToken cancellationToken) => throw new NotImplementedException();
 
     public Task<Location> GetByIdAsync(Guid locationId, CancellationToken cancellationToken) => throw new NotImplementedException();
+
+    public async Task<List<Guid>> GetAllExistingIdLocationAsync(List<Guid> requestIds, CancellationToken cancellationToken)
+    {
+        return await _dbContext.Locations
+            .Where(l => requestIds.Contains(l.Id.value))
+            .Select(l => l.Id.value)
+            .ToListAsync(cancellationToken);
+    }
 }

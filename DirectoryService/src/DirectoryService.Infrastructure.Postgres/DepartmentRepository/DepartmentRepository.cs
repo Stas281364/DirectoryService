@@ -23,11 +23,6 @@ public class DepartmentRepository : IDepartmentRepository
 
     public async Task<Result<Department>> GetByIdAsync(Guid? departmentId, CancellationToken cancellationToken)
     {
-        if (departmentId == Guid.Empty)
-        {
-            return null;
-        }
-        
         var depId = new DepartmentId(departmentId.Value);
         var Result = await _dbContext.Departments.FindAsync(depId, cancellationToken);
         return Result;
