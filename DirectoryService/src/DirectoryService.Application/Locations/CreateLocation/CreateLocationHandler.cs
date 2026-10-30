@@ -8,12 +8,15 @@ using Microsoft.Extensions.Logging;
 using DirectoryService.Domain.Locations;
 using TimeZone = DirectoryService.Domain.Locations.TimeZone;
 using DirectoryService.Application.Abstractions;
+using DirectoryService.Application.Locations.CreateLocation;
+using DirectoryService.Domain.Departments;
+using Name = DirectoryService.Domain.Locations.Name;
 
 namespace DirectoryService.Application.Locations;
 
-public class CreateLocationHandler : ICommandHanlder<Guid, CreateLocationCommand>
+public class CreateLocationHandler : ICommandHandler<Guid, CreateLocationCommand>
 {
-    private readonly ILogger<LocationService> _logger;
+    private readonly ILogger<CreateLocationHandler> _logger;
     private readonly ILocationRepository _locationRepository;
     private readonly IValidator<CreateLocationDto> _validator;
     
@@ -21,7 +24,7 @@ public class CreateLocationHandler : ICommandHanlder<Guid, CreateLocationCommand
     
     public CreateLocationHandler(
         ILocationRepository locationRepository,
-        ILogger<LocationService> logger, 
+        ILogger<CreateLocationHandler> logger, 
         IValidator<CreateLocationDto> validator)
     {
         _locationRepository = locationRepository;
@@ -58,7 +61,7 @@ public class CreateLocationHandler : ICommandHanlder<Guid, CreateLocationCommand
 
         //Сохранение сущности Department в БД
         //await _locationRepository.AddAsync(result.Value, cancellationToken);
-        await _locationRepository.AddAsync(result.Value, cancellationToken);
+        await _locationRepository.AddAsyncLocation(result.Value, cancellationToken);
         
         //Логгирование об успехе или отказной ситуации(ошибки сохранения)
         _logger.LogInformation($"Location created with id {result.Value.Id}", result.Value.Id);

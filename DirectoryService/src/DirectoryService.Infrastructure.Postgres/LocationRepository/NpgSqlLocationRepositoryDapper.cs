@@ -80,7 +80,7 @@ public class NpgSqlLocationRepositoryDapper : ILocationRepository
         _connectionFactory = connectionFactory;
     }
 
-    public async Task<Guid> AddAsync(Location location, CancellationToken cancellationToken)
+    public async Task<Guid> AddAsyncLocation(Location location, CancellationToken cancellationToken)
     {
         using var connection = await _connectionFactory.CreateConnectionAsync(cancellationToken);
         
@@ -139,6 +139,11 @@ public class NpgSqlLocationRepositoryDapper : ILocationRepository
     }
     
     public Task<Location> GetByIdAsync(Guid locationId, CancellationToken cancellationToken)
+    {
+        throw new Exception("Not Implemented");
+    }
+
+    public Task<List<Guid>> GetAllExistingIdLocationAsync(List<Guid> requestIds,CancellationToken cancellationToken)
     {
         throw new Exception("Not Implemented");
     }

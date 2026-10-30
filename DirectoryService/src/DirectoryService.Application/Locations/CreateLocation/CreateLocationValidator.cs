@@ -8,7 +8,7 @@ public class CreateLocationValidator : AbstractValidator<CreateLocationDto>
     public CreateLocationValidator()
     {
         RuleFor(location => location.Name).NotNull().WithMessage("Name must not null")
-            .NotEmpty().WithMessage("Name is required.")
+            .NotEmpty().WithMessage("Name is required.")   
             .MaximumLength(LocationConstants.MaxLenght120).WithMessage("Заголовок слишком длинный");
 
         RuleFor(location => location.Address.Country).NotNull().WithMessage("Address must not null")

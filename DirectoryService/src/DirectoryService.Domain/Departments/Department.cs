@@ -1,6 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using DirectoryService.Domain.DepartmentLocations;
 using DirectoryService.Domain.DepartmentPositions;
+using DirectoryService.Domain.Locations;
 
 
 namespace DirectoryService.Domain.Departments;
@@ -18,7 +19,7 @@ public class Department
     public DepartmentId? ParentDepartmentId { get; private set; } //ParentId/Foreing key/ null = корень
     public Department? ParentDepartment { get; private set; } //ParentId/Foreing key/ null = корень
     public Path Path { get; private set; } //ValueObject
-    public short Depth { get; private set; } // Глубина подразделения
+    public short? Depth { get; private set; } // Глубина подразделения
     public bool IsActive { get; private set; } // для soft delete
     public IReadOnlyList<Department> ChildDepartments => _childDepartments;  //Дочерние Department
     public DateTime CreatedAt { get; private set; }
@@ -35,13 +36,13 @@ public class Department
     {
     }
 
-    private Department(Name name, Identifier identifier, Department? parentDepartment, Path path, short depth)
+    private Department(Name name, Identifier identifier, Department? parentDepartment, Path path, short? depth)
     {
         Id = new DepartmentId(Guid.NewGuid());
         DepartmentName = name;
         Identifier = identifier;
         ParentDepartment = parentDepartment;
-        ParentDepartmentId = parentDepartment.Id;
+        ParentDepartmentId = parentDepartment == null ? null : parentDepartment.Id;
         Path = path;
         Depth = depth;
         IsActive = true;
@@ -50,14 +51,17 @@ public class Department
     }
         
     //Создане модели
-    public static Result<Department> Create(Name name, Identifier identifier, Department? parentDepartment, Path path, short depth)
+    public static Result<Department> Create(Name name, Identifier identifier, Department? parentDepartment, Path path, short depth, List<Guid> locations)
     {
         //return new Result<Department>(); /// МОЖНО ТАК!!! 
         //Result.Success<Department>(new Department(...))  ///ИЛИ МОЖНО ТАК!!! 
         //return new Department(,,,); /// ИЛИ ТАК!!! 
         
         //Валидация уже имеется в Name Identifier Path
-        return new Department(name, identifier, parentDepartment, path, depth);
+
+        Department dep = new Department(name, identifier, parentDepartment, path, depth);
+        dep.AddLocationsToDep(locations);
+        return dep;
     }
 
     //Изменение модели
@@ -153,6 +157,16 @@ public class Department
         this.IsActive = false;
         UpdatedAt = DateTime.UtcNow;
         return Result.Success();
+    }
+    
+    public void AddLocationsToDep(IEnumerable<Guid> locations)
+    {
+        foreach(var loc in locations)
+        {
+            DepartmentLocation deploc = new DepartmentLocation(loc, Id.Value);
+            
+            _departmentLocations.Add(deploc);
+        }
     }
 }
 
